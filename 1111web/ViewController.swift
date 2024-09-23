@@ -83,7 +83,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
          """
         } else {
             jsCode = """
-                   var h2Element = document.querySelector('h2.mb-4[data-v-150fb382]');
+                   var h2Element = document.querySelector('h2');
                    if (h2Element && h2Element.textContent.includes('工作內容')) {
                        'Data is loaded';
                    } else {
@@ -130,20 +130,23 @@ class ViewController: UIViewController, WKNavigationDelegate {
             }
         }
     }
-    
     func pressNextPageButton() {
         let jsCode = """
         (function() {
         
-        
+            // 正常的下一頁按鈕
             var elementA = document.querySelector('li.paging__item.d-inline-block.position-relative.text-center.mx-1.px-1 a.paging__link i.jb_icon_right[data-gtm-job="下一頁"]');
-        
             var elementB = document.querySelector('a.btn.btn-sm.btn-text i.jb_icon_right');
 
-            var disabledElement = document.querySelector('li.paging__item.disable a.paging__link i.jb_icon_right[data-gtm-job="下一頁"]');
-            
+            // Disabled 的下一頁按鈕
+            var disabledElementA = document.querySelector('li.paging__item.disable a.paging__link i.jb_icon_right[data-gtm-job="下一頁"]');
+            var disabledElementB = document.querySelector('a.btn.btn-sm.btn-text.disabled i.jb_icon_right');
+
+            // 選擇下一頁按鈕，如果 disabled 的按鈕存在，則選擇 disabled 按鈕
             var element = elementA || elementB;
-        
+            var disabledElement = disabledElementA || disabledElementB;
+
+            // 判斷按鈕是否 disabled
             if (disabledElement) {
                 window.webkit.messageHandlers.callbackHandler.postMessage('All page complete');
             } else if (element) {
@@ -188,6 +191,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
             }
         }
     }
+
     
     
     func fetchJob() {
@@ -257,10 +261,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
             //職務類別
             if let jobCategory = try jobDescriptionDiv?.select("h3:contains(職務類別)").first() {
                 
-                // 找到與 "職務類別" 標題相鄰的 col.p-0 list-row__data
                 if let jobNatureData = try jobCategory.parent()?.nextElementSibling()?.select("div.list-row__data").first()?.select("u") {
                     
-                    // 抓取 "職務類別" 的內容
                     let jobNatureText = try jobNatureData.text()
                     print("職務類別: \(jobNatureText)")
                 }
@@ -270,10 +272,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
             //工作性質
             if let jobNatureTitle = try jobDescriptionDiv?.select("h3:contains(工作性質)").first() {
                 
-                // 找到與 "工作性質" 標題相鄰的 list-row__data div
                 if let jobNatureData = try jobNatureTitle.parent()?.nextElementSibling()?.select("div.list-row__data").first() {
                     
-                    // 抓取 "工作性質" 的內容
                     let jobNatureText = try jobNatureData.text()
                     print("工作性質: \(jobNatureText)")
                 }
@@ -282,10 +282,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
             //上班地點
             if let jobWorkplaceTitle = try jobDescriptionDiv?.select("h3:contains(上班地點)").first() {
                 
-                // 找到與 "上班地點" 標題相鄰的 list-row__data div
                 if let jobWorkplace = try jobWorkplaceTitle.parent()?.nextElementSibling()?.select("div.job-address").select("span").first() {
                     
-                    // 抓取 "上班地點" 的內容
                     let jobWorkplaceText = try jobWorkplace.text()
                     print("上班地點: \(jobWorkplaceText)")
                 }
