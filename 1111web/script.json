@@ -1,0 +1,85 @@
+{
+    "companyURL": "https://www.104.com.tw/company/",
+    "jobURL": "https://www.104.com.tw/job/",
+    "pressNextButton": "(function() { var pageFooter = document.querySelector('div.joblist__footer');   if (!pageFooter) { window.webkit.messageHandlers.callbackHandler.postMessage('All page complete'); return; }   var normalNextButtonA = document.querySelector('li.paging__item.d-inline-block.position-relative.text-center.mx-1.px-1 a.paging__link i.jb_icon_right[data-gtm-job=\\"下一頁\\"]'); var normalNextButtonB = document.querySelector('a.btn.btn-sm.btn-text i.jb_icon_right');   var disabledNextButtonA = document.querySelector('li.paging__item.disable a.paging__link i.jb_icon_right[data-gtm-job=\\"下一頁\\"]'); var disabledNextButtonB = document.querySelector('a.btn.btn-sm.btn-text.disabled i.jb_icon_right');   var nextButton = normalNextButtonA || normalNextButtonB; var disabledNextButton = disabledNextButtonA || disabledNextButtonB;   if (disabledNextButton) { window.webkit.messageHandlers.callbackHandler.postMessage('All page complete'); } else if (nextButton) { if (nextButton.offsetParent !== null) { nextButton.click();  var checkRequestCompletion = function() { var xhrs = window.performance.getEntriesByType('resource'); var allCompleted = true;  for (var i = 0; i < xhrs.length; i++) { if (xhrs[i].responseEnd === 0) { allCompleted = false; break; } }  return allCompleted ? 'All requests completed' : 'Some requests still pending'; };  var checkInterval = setInterval(function() { var status = checkRequestCompletion(); if (status === 'All requests completed') { clearInterval(checkInterval); window.webkit.messageHandlers.callbackHandler.postMessage('Next Page Request completed'); } else { window.webkit.messageHandlers.callbackHandler.postMessage('Next Page Request uncompleted'); } }, 1000); } else { window.webkit.messageHandlers.callbackHandler.postMessage('Button is not visible'); } } else { window.webkit.messageHandlers.callbackHandler.postMessage('All page complete'); } })();",
+    "checkIsAllPageCompleteJsCode": {
+        "company": "var specificElement = document.querySelector('div.joblist__container'); if (specificElement && specificElement.textContent.trim() !== '') { 'Data is loaded'; } else { 'Data is still loading'; }",
+        "job": "var h2Element = document.querySelector('h2'); if (h2Element && h2Element.textContent.includes('工作內容')) { 'Data is loaded'; } else { 'Data is still loading'; }"
+    },
+    "parseCompany": {
+        "selector": "div.joblist__container",
+        "subSelector": [
+            {
+                "selector": "div[encodedjobno]",
+                "target": "encodedjobno"
+            },
+            {
+                "selector": "div[analysisurl]",
+                "target": "analysisurl"
+            }
+        ]
+    },
+    "parseJob": {
+        "jobDescription": {
+            "selector": "div.job-description-table",
+            "subSelector": {
+                "jobCategory": {
+                    "selector": "h3:contains(職務類別)",
+                    "subSelector": {
+                        "selector": "div.list-row__data u"
+                    }
+                },
+                "jobNature": {
+                    "selector": "h3:contains(工作性質)",
+                    "subSelector": {
+                        "selector": "div.list-row__data"
+                    }
+                },
+                "jobWorkPlaceTitle": {
+                    "selector": "h3:contains(上班地點)",
+                    "subSelector": {
+                        "selector": "div.job-address span"
+                    }
+                }
+            }
+        },
+        "jobContent": {
+            "title": "工作內容",
+            "selector": "div.job-description-table",
+            "subSelector": {
+                "title": "工作內容",
+                "selector": "p.job-description__content"
+            },
+            "subSelectors": [
+                {
+                    "title": "遠端工作",
+                    "selector": "h3:contains(遠端工作)"
+                },
+                {
+                    "title": "管理責任",
+                    "selector": "h3:contains(管理責任)"
+                },
+                {
+                    "title": "出差外派",
+                    "selector": "h3:contains(出差外派)"
+                },
+                {
+                    "title": "上班時段",
+                    "selector": "h3:contains(上班時段)"
+                },
+                {
+                    "title": "休假制度",
+                    "selector": "h3:contains(休假制度)"
+                },
+                {
+                    "title": "可上班日",
+                    "selector": "h3:contains(可上班日)"
+                },
+                {
+                    "title": "需求人數",
+                    "selector": "h3:contains(需求人數)"
+                }
+            ]
+        }
+    }
+}
